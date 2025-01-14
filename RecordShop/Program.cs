@@ -1,4 +1,4 @@
-
+using Microsoft.EntityFrameworkCore;
 using System;
 
 namespace RecordShop
@@ -8,10 +8,10 @@ namespace RecordShop
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
-            
+
             builder.Services.AddDbContext<RecordShopDbContext>(options =>
             {
-                if (builder.Environment.EnvironmentName == "Development")
+                if (builder.Environment.IsDevelopment())
                 {
                     // Use In-Memory Database for development
                     options.UseInMemoryDatabase("RecordShopMemory");
@@ -20,27 +20,59 @@ namespace RecordShop
                 // Add services to the container.
 
                 builder.Services.AddControllers();
-            // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-            builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+                // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
+                builder.Services.AddEndpointsApiExplorer();
+                builder.Services.AddSwaggerGen();
 
-            var app = builder.Build();
+                var app = builder.Build();
 
-            // Configure the HTTP request pipeline.
-            if (app.Environment.IsDevelopment())
-            {
-                app.UseSwagger();
-                app.UseSwaggerUI();
-            }
+                // Configure the HTTP request pipeline.
+                if (app.Environment.IsDevelopment())
+                {
+                    app.UseSwagger();
+                    app.UseSwaggerUI();
+                }
 
-            app.UseHttpsRedirection();
+                app.UseHttpsRedirection();
 
-            app.UseAuthorization();
+                app.UseAuthorization();
 
 
-            app.MapControllers();
+                app.MapControllers();
 
-            app.Run();
+                app.Run();
+
+                void SeedData(RecordShopDbContext dbContext)
+                {
+                    if (!dbContext.Artists.Any())
+                    {
+                        dbContext.Artists.AddRange(new Artist
+                        {
+                            Name = "The Beatles"
+                        },
+                        new Artist
+                        {
+                            Name = "ABBA"
+                        });
+
+                        dbContext.SaveChanges();
+                    }
+
+                    if (!dbContext.Genres.Any())
+                    {
+                        dbContext.Genres.AddRange(new Genre
+                        {
+                            Name = "Rock"
+                        },
+                        new Genre
+                        {
+                            Name = "Pop"
+                        });
+
+                        dbContext.SaveChanges();
+                    }
+                }
         }
     }
 }
+
