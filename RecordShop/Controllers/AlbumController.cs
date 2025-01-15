@@ -7,22 +7,25 @@ namespace RecordShop.Controllers
     public class AlbumController : ControllerBase
     {
         private readonly IAlbumService _albumService;
-        private readonly RecordShopDbContext _context;
+        
 
-        //public AlbumController(IAlbumService albumService)
-        //{
-        //    _albumService = albumService;
-        //}
-        public AlbumController(RecordShopDbContext context)
+        public AlbumController(IAlbumService albumService)
         {
-            _context = context;
+            _albumService = albumService;
         }
 
         [HttpGet]
         public IActionResult GetAllAlbums()
         {
-            var albums = _context.Albums.Include(a => a.Artist).ToList();
+            var albums = _albumService.GetAllAlbums();
                 return Ok(albums);
+        }
+
+        [HttpGet]
+        public IActionResult GetAlbumById(int id)
+        {
+            var albums = _albumService.GetAlbumById(id);
+            return Ok(albums);
         }
     }
 
