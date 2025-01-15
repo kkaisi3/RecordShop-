@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
-VisualStudioVersion = 17.12.35521.163 d17.12
+VisualStudioVersion = 17.12.35521.163
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShop", "RecordShop.csproj", "{20C94581-0683-4FB6-9F61-BFB7DBF6E3C3}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "RecordShopTests", "..\RecordShopTests\RecordShopTests.csproj", "{AB981A6C-18A1-4E33-85E7-65DE3AB232FA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{20C94581-0683-4FB6-9F61-BFB7DBF6E3C3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{20C94581-0683-4FB6-9F61-BFB7DBF6E3C3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{20C94581-0683-4FB6-9F61-BFB7DBF6E3C3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AB981A6C-18A1-4E33-85E7-65DE3AB232FA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AB981A6C-18A1-4E33-85E7-65DE3AB232FA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AB981A6C-18A1-4E33-85E7-65DE3AB232FA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AB981A6C-18A1-4E33-85E7-65DE3AB232FA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
