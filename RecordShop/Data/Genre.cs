@@ -1,8 +1,12 @@
 ﻿namespace RecordShop.Data
 {
-    public class Genre
+    public enum Genre
     {
-        public int Id { get; set; }
-        public string Name { get; set; }
+        Pop,
+        HipHop,
+        Rock,
+        Jazz,
+        Classical,
+        Reggae
     }
 }

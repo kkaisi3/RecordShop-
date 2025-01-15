@@ -1,4 +1,6 @@
 using Microsoft.EntityFrameworkCore;
+using RecordShop.Model;
+using RecordShop.Services;
 using System;
 
 namespace RecordShop
@@ -14,8 +16,9 @@ namespace RecordShop
                 if (builder.Environment.IsDevelopment())
                 {
                     // Use In-Memory Database for development
-                    options.UseInMemoryDatabase("RecordShopMemory");
+                    options.UseInMemoryDatabase("RecordShopInMemory");
                 }
+            });
 
                 // Add services to the container.
 
@@ -24,7 +27,16 @@ namespace RecordShop
                 builder.Services.AddEndpointsApiExplorer();
                 builder.Services.AddSwaggerGen();
 
-                var app = builder.Build();
+            builder.Services.AddScoped<IAlbumService, AlbumService>();
+            builder.Services.AddScoped<IAlbumRepository, AlbumRepository>();
+
+            var app = builder.Build();
+
+            using (var scope = app.Services.CreateScope())
+            {
+                var dbContext = scope.ServiceProvider.GetRequiredService<RecordShopDbContext>();
+                dbContext.Database.EnsureCreated();
+            }
 
                 // Configure the HTTP request pipeline.
                 if (app.Environment.IsDevelopment())
@@ -42,36 +54,11 @@ namespace RecordShop
 
                 app.Run();
 
-                void SeedData(RecordShopDbContext dbContext)
-                {
-                    if (!dbContext.Artists.Any())
-                    {
-                        dbContext.Artists.AddRange(new Artist
-                        {
-                            Name = "The Beatles"
-                        },
-                        new Artist
-                        {
-                            Name = "ABBA"
-                        });
 
-                        dbContext.SaveChanges();
-                    }
 
-                    if (!dbContext.Genres.Any())
-                    {
-                        dbContext.Genres.AddRange(new Genre
-                        {
-                            Name = "Rock"
-                        },
-                        new Genre
-                        {
-                            Name = "Pop"
-                        });
 
-                        dbContext.SaveChanges();
-                    }
-                }
+            
+        
         }
     }
 }
