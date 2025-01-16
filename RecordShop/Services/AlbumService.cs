@@ -5,8 +5,11 @@ namespace RecordShop.Services
 {
     public interface IAlbumService
     {
-     List<Album> GetAllAlbums();
+        List<Album> GetAllAlbums();
         Album GetAlbumById(int id);
+
+        Album CreateAlbum(Album album);
+
     }
     public class AlbumService : IAlbumService
     {
@@ -25,6 +28,11 @@ namespace RecordShop.Services
         public Album GetAlbumById(int id)
         {
             return _albumRepository.GetAlbumById(id);
+        }
+
+        public Album CreateAlbum(Album album)
+        {
+            return _albumRepository.CreateAlbum(album);
         }
     }
 }
