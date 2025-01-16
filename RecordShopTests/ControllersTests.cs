@@ -37,7 +37,7 @@ namespace RecordShopTests
 
             // Assert
             var listOfAlbums = result.Value as List<Album>;
-            listOfAlbums.Should().BeEquivalentTo(albums); // Compare the lists
+            listOfAlbums.Should().BeEquivalentTo(albums); 
         }
 
         [Test]
@@ -56,6 +56,26 @@ namespace RecordShopTests
             var returnedAlbum = result.Value as Album;
             returnedAlbum.Should().BeEquivalentTo(album);
 
+        }
+        [Test]
+        public void CreateAlbum_Return()
+        {
+            // Arrange
+            var albumToPost = new Album { Id = 1, Title = "Madvillainy", ArtistId = 1 };
+            var postedAlbum = new Album { Id = 1, Title = "Madvillainy", ArtistId = 1 };
+
+            _albumServiceMock.Setup(s => s.CreateAlbum(albumToPost)).Returns(postedAlbum);
+
+            var albumController = new AlbumController(_albumServiceMock.Object);
+
+            // Act
+            var result = albumController.CreateAlbum(albumToPost) as CreatedAtActionResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(201);
+            result.Value.Should().BeEquivalentTo(postedAlbum);
+            result.RouteValues["id"].Should().Be(postedAlbum.Id);
         }
     }
 }

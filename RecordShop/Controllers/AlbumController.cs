@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using RecordShop.Data;
 using RecordShop.Services;
 namespace RecordShop.Controllers
 {
@@ -21,11 +22,20 @@ namespace RecordShop.Controllers
                 return Ok(albums);
         }
 
-        [HttpGet]
+        [HttpGet("id")]
         public IActionResult GetAlbumById(int id)
         {
             var albums = _albumService.GetAlbumById(id);
             return Ok(albums);
+        }
+
+        [HttpPost]
+        public IActionResult CreateAlbum([FromBody] Album album)
+        {
+
+            var createdAlbum = _albumService.CreateAlbum(album);
+
+            return CreatedAtAction("GetAlbumById", new { id = createdAlbum.Id }, createdAlbum);
         }
     }
 
