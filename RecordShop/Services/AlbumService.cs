@@ -10,6 +10,10 @@ namespace RecordShop.Services
 
         Album CreateAlbum(Album album);
 
+        void UpdateAlbum(Album album);
+
+        void DeleteAlbum(int id);
+
     }
     public class AlbumService : IAlbumService
     {
@@ -34,5 +38,17 @@ namespace RecordShop.Services
         {
             return _albumRepository.CreateAlbum(album);
         }
+
+        public void UpdateAlbum(Album album)
+        {
+            _albumRepository.UpdateAlbum(album);
+        }
+
+        public void DeleteAlbum(int id)
+        {
+            _albumRepository.DeleteAlbum(id);
+        }
+
+     
     }
 }

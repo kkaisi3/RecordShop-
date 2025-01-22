@@ -10,7 +10,9 @@ namespace RecordShop.Model
         Album GetAlbumById(int id);
 
         Album CreateAlbum(Album album);
-      
+        void UpdateAlbum(Album album);
+
+        void DeleteAlbum(int id);
     }
     public class AlbumRepository : IAlbumRepository
     {
@@ -36,6 +38,27 @@ namespace RecordShop.Model
             _context.Albums.Add(album);
             _context.SaveChanges();
             return album;
+        }
+
+        public void UpdateAlbum(Album album)
+        {
+            var existingAlbum = _context.Albums.Find(album.Id);
+
+            existingAlbum.Title = album.Title;
+            existingAlbum.ReleaseDate = album.ReleaseDate;
+
+
+            _context.SaveChanges();
+        }
+
+        public void DeleteAlbum(int id)
+        {
+            var album = _context.Albums.Find(id); 
+            if (album != null)
+            {
+                _context.Albums.Remove(album); 
+                _context.SaveChanges(); 
+            }
         }
     }
 }

@@ -8,7 +8,7 @@ namespace RecordShop.Controllers
     public class AlbumController : ControllerBase
     {
         private readonly IAlbumService _albumService;
-        
+
 
         public AlbumController(IAlbumService albumService)
         {
@@ -19,7 +19,7 @@ namespace RecordShop.Controllers
         public IActionResult GetAllAlbums()
         {
             var albums = _albumService.GetAllAlbums();
-                return Ok(albums);
+            return Ok(albums);
         }
 
         [HttpGet("id")]
@@ -36,6 +36,24 @@ namespace RecordShop.Controllers
             var createdAlbum = _albumService.CreateAlbum(album);
 
             return CreatedAtAction("GetAlbumById", new { id = createdAlbum.Id }, createdAlbum);
+        }
+
+        [HttpPut("{id}")]
+        public IActionResult UpdateAlbum(int id, [FromBody] Album album)
+        {
+            if (id != album.Id)
+            {
+                return BadRequest("Album ID mismatch.");
+            }
+            _albumService.UpdateAlbum(album);
+            return Ok(album);
+
+        }
+        [HttpDelete("{id}")]
+        public IActionResult DeleteAlbum(int id)
+        {
+            _albumService.DeleteAlbum(id);
+            return NoContent(); 
         }
     }
 
