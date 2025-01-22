@@ -19,7 +19,7 @@ namespace RecordShopTests
         private Mock<IAlbumService> _albumServiceMock;
         private AlbumController _albumController;
 
-        [SetUp]
+        [SetUp]     
         public void SetUp()
         {
             _albumServiceMock = new Mock<IAlbumService>();
@@ -77,5 +77,57 @@ namespace RecordShopTests
             result.Value.Should().BeEquivalentTo(postedAlbum);
             result.RouteValues["id"].Should().Be(postedAlbum.Id);
         }
+
+        [Test]
+        public void UpdateAlbum_ShouldReturnOkResult_WithUpdatedAlbum()
+        {
+            // Arrange
+            var albumId = 1; // Simulate path variable
+            var updatedAlbum = new Album
+            {
+                Id = albumId,
+                Title = "Title1",
+                ReleaseDate = new DateTime(2001, 1, 1)
+            };
+
+            // Mock Setup for void method
+            _albumServiceMock
+                .Setup(s => s.UpdateAlbum(It.Is<Album>(a => a.Id == albumId && a.Title == "Title1")))
+                .Callback<Album>(album =>
+                {
+                    album.Id.Should().Be(albumId);
+                    album.Title.Should().Be("Title1");
+                });
+
+            // Act
+            var result = _albumController.UpdateAlbum(albumId, updatedAlbum) as OkObjectResult;
+
+            // Assert
+            result.Should().NotBeNull();
+            result.StatusCode.Should().Be(200); 
+            result.Value.Should().BeOfType<Album>();
+
+            var returnedAlbum = result.Value as Album;
+            returnedAlbum.Should().NotBeNull();
+            //ignore properties not changed
+            returnedAlbum.Should().BeEquivalentTo(updatedAlbum, options => options.ExcludingMissingMembers());
+
+            _albumServiceMock.Verify(service => service.UpdateAlbum(It.Is<Album>(a => a.Id == albumId)), Times.Once);
+        }
+        [Test]
+        public void DeleteAlbum_NotFoundWhenDeleted()
+        {
+            // Arrange
+            var albumId = 1;
+            _albumServiceMock.Setup(service => service.DeleteAlbum(albumId));
+
+            // Act
+            var result = _albumController.DeleteAlbum(albumId); 
+
+            // Assert
+            result.Should().BeOfType<NoContentResult>(); 
+            _albumServiceMock.Verify(service => service.DeleteAlbum(albumId), Times.Once); 
+        }
+
     }
 }
