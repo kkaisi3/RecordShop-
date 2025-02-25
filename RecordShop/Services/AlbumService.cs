@@ -5,14 +5,14 @@ namespace RecordShop.Services
 {
     public interface IAlbumService
     {
-        List<Album> GetAllAlbums();
-        Album GetAlbumById(int id);
+        Task <List<Album>> GetAllAlbums();
+        Task<Album> GetAlbumById(int id);
 
-        Album CreateAlbum(Album album);
+        Task <Album> CreateAlbum(Album album);
 
-        void UpdateAlbum(Album album);
+        Task UpdateAlbum(Album album);
 
-        void DeleteAlbum(int id);
+        Task DeleteAlbum(int id);
 
     }
     public class AlbumService : IAlbumService
@@ -24,29 +24,29 @@ namespace RecordShop.Services
             _albumRepository = albumRepository;
         }
 
-        public List<Album> GetAllAlbums()
+        public async Task<List<Album>> GetAllAlbums()
         {
-            return _albumRepository.GetAllAlbums();
+            return await _albumRepository.GetAllAlbums();
         }
 
-        public Album GetAlbumById(int id)
+        public async Task<Album> GetAlbumById(int id)
         {
-            return _albumRepository.GetAlbumById(id);
+            return await _albumRepository.GetAlbumById(id);
         }
 
-        public Album CreateAlbum(Album album)
+        public async Task<Album> CreateAlbum(Album album)
         {
-            return _albumRepository.CreateAlbum(album);
+            return await _albumRepository.CreateAlbum(album);
         }
 
-        public void UpdateAlbum(Album album)
+        public async Task UpdateAlbum(Album album)
         {
-            _albumRepository.UpdateAlbum(album);
+            await _albumRepository.UpdateAlbum(album);
         }
 
-        public void DeleteAlbum(int id)
+        public async Task DeleteAlbum(int id)
         {
-            _albumRepository.DeleteAlbum(id);
+           await _albumRepository.DeleteAlbum(id);
         }
 
      

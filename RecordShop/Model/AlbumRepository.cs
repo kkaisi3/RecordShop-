@@ -6,13 +6,13 @@ namespace RecordShop.Model
 {
     public interface IAlbumRepository
     {
-        List<Album> GetAllAlbums();
-        Album GetAlbumById(int id);
+        public Task<List<Album>> GetAllAlbums();
+        Task<Album> GetAlbumById(int id);
 
-        Album CreateAlbum(Album album);
-        void UpdateAlbum(Album album);
+        Task<Album> CreateAlbum(Album album);
+        Task UpdateAlbum(Album album);
 
-        void DeleteAlbum(int id);
+        Task DeleteAlbum(int id);
     }
     public class AlbumRepository : IAlbumRepository
     {
@@ -23,41 +23,41 @@ namespace RecordShop.Model
             _context = context;
         }
 
-        public List<Album> GetAllAlbums()
+        public async Task<List<Album>> GetAllAlbums()
         {
-            return _context.Albums.Include(a => a.Artist).ToList();
+            return await _context.Albums.Include(a => a.Artist).ToListAsync();
         }
 
-        public Album GetAlbumById(int id)
+          public async Task<Album> GetAlbumById(int id)
         {
-            return GetAllAlbums().FirstOrDefault(a => a.Id == id);
+            return await _context.Albums.Include(a => a.Artist).FirstOrDefaultAsync(a => a.Id == id);
         }
 
-        public Album CreateAlbum(Album album)
+        public async Task<Album> CreateAlbum(Album album)
         {
-            _context.Albums.Add(album);
-            _context.SaveChanges();
+           _context.Albums.Add(album);
+            await _context.SaveChangesAsync();
             return album;
         }
 
-        public void UpdateAlbum(Album album)
+        public async Task UpdateAlbum(Album album)
         {
-            var existingAlbum = _context.Albums.Find(album.Id);
+            var existingAlbum = await _context.Albums.FindAsync(album.Id);
 
             existingAlbum.Title = album.Title;
             existingAlbum.ReleaseDate = album.ReleaseDate;
 
 
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
-        public void DeleteAlbum(int id)
+        public async Task DeleteAlbum(int id)
         {
-            var album = _context.Albums.Find(id); 
+            var album = await _context.Albums.FindAsync(id); 
             if (album != null)
             {
                 _context.Albums.Remove(album); 
-                _context.SaveChanges(); 
+               await _context.SaveChangesAsync(); 
             }
         }
     }
